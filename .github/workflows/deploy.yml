@@ -6,12 +6,13 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
+  pull-requests: write
 
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.event.pull_request.number || 'main' }}"
   cancel-in-progress: true
 
 jobs:
@@ -30,26 +31,29 @@ jobs:
             echo "url=/pixel-cool/" >> $GITHUB_OUTPUT
           fi
 
-      - name: Update start_url for PR preview
-        if: github.event_name == 'pull_request'
+      - name: Update start_url for preview
         run: |
-          sed -i 's|"start_url": "[^"]*"|"start_url": "${{ steps.context.outputs.url }}"|' manifest.json
-          cat manifest.json
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            sed -i 's|"start_url": "[^"]*"|"start_url": "/pixel-cool-pr-${{ github.event.pull_request.number }}/"|' manifest.json
+          else
+            sed -i 's|"start_url": "[^"]*"|"start_url": "/pixel-cool/"|' manifest.json
+          fi
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: .
+          branch: gh-pages
+          target-folder: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || '' }}
+          clean: false
+          commit-message: "Deploy ${{ github.ref }}"
+          single-commit: false
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          echo "## Preview URL" >> $GITHUB_STEP_SUMMARY
-          echo "https://${{ github.server_url }}/pages/${{ github.repository }}/pixel-cool-pr-${{ github.event.pull_request.number }}/" >> $GITHUB_STEP_SUMMARY
+          COMMENT_BODY="## Preview URL https://mcanevet.github.io/pixel-cool/pr-${{ github.event.pull_request.number }}/"
+          gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_BODY"
