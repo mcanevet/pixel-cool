@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
 
 permissions:
   contents: read
@@ -11,17 +12,29 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Detect deployment context
+        id: context
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "url=/pixel-cool-pr-${{ github.event.pull_request.number }}/" >> $GITHUB_OUTPUT
+          else
+            echo "url=/pixel-cool/" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update start_url for PR preview
+        if: github.event_name == 'pull_request'
+        run: |
+          sed -i 's|"start_url": "[^"]*"|"start_url": "${{ steps.context.outputs.url }}"|' manifest.json
+          cat manifest.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -34,3 +47,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Comment PR with preview URL
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## Preview URL" >> $GITHUB_STEP_SUMMARY
+          echo "https://${{ github.server_url }}/pages/${{ github.repository }}/pixel-cool-pr-${{ github.event.pull_request.number }}/" >> $GITHUB_STEP_SUMMARY
