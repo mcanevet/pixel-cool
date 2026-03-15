@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pixel-cool-v1';
+const CACHE_NAME = 'pixel-cool-v2';
 const urlsToCache = [
   '/',
   '/index.html',
