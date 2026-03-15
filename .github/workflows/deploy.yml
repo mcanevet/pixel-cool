@@ -40,10 +40,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: .
-          target_branch: gh-pages
           branch: gh-pages
+          target-folder: ${{ github.event_name == 'pull_request' && 'pr-preview' || '.' }}
           clean: ${{ github.event_name != 'pull_request' }}
-          gitCommitMessage: "Deploy ${{ github.ref }}"
+          commit-message: "Deploy ${{ github.ref }}"
           single-commit: ${{ github.event_name == 'pull_request' }}
 
       - name: Comment PR with preview URL
