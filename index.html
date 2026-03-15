@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Cool</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Pixel Cool</h1>
+    <div class="level-indicator">Niveau: <span id="currentLevel">Easy</span> - <span id="patternName"></span></div>
+  </header>
+
+  <div class="game-container">
+    <div class="mosaic-section">
+      <div class="mosaic-label">Objectif</div>
+      <div id="targetGrid" class="grid"></div>
+    </div>
+    <div class="mosaic-section">
+      <div class="mosaic-label">Ton puzzle</div>
+      <div id="playerGrid" class="grid"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="progress-container">
+      <div class="progress-label">Progression: <span id="progressText">0%</span></div>
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+      </div>
+    </div>
+    <div class="level-buttons">
+      <button class="level-btn active" data-size="4">Easy</button>
+      <button class="level-btn" data-size="8">Medium</button>
+      <button class="level-btn" data-size="12">Hard</button>
+      <button class="level-btn" data-size="16">Expert</button>
+      <button class="level-btn" data-size="20">Master</button>
+    </div>
+  </footer>
+
+  <div id="winModal" class="modal-overlay">
+    <div class="modal">
+      <h2>Félicitations !</h2>
+      <p id="winMessage">Tu as complété le niveau Easy !</p>
+      <button id="nextLevelBtn" class="modal-btn">Continuer</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
