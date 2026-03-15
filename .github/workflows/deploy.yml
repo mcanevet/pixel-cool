@@ -36,14 +36,15 @@ jobs:
           sed -i 's|"start_url": "[^"]*"|"start_url": "${{ steps.context.outputs.url }}"|' manifest.json
 
       - name: Deploy to GitHub Pages
-        uses: JamesIvy/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: .
           target_branch: gh-pages
           branch: gh-pages
-          clean: true
+          clean: ${{ github.event_name != 'pull_request' }}
           gitCommitMessage: "Deploy ${{ github.ref }}"
+          single-commit: ${{ github.event_name == 'pull_request' }}
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'
