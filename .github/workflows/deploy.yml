@@ -48,6 +48,8 @@ jobs:
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           COMMENT_BODY="## Preview URL https://mcanevet.github.io/pixel-cool/pr-${{ github.event.pull_request.number }}/"
           gh pr comment ${{ github.event.pull_request.number }} --body "$COMMENT_BODY"
