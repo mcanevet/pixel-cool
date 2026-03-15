@@ -31,10 +31,13 @@ jobs:
             echo "url=/pixel-cool/" >> $GITHUB_OUTPUT
           fi
 
-      - name: Update start_url for PR preview
-        if: github.event_name == 'pull_request'
+      - name: Update start_url for preview
         run: |
-          sed -i 's|"start_url": "[^"]*"|"start_url": "${{ steps.context.outputs.url }}"|' manifest.json
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            sed -i 's|"start_url": "[^"]*"|"start_url": "/pixel-cool-pr-${{ github.event.pull_request.number }}/"|' manifest.json
+          else
+            sed -i 's|"start_url": "[^"]*"|"start_url": "/pixel-cool/"|' manifest.json
+          fi
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
@@ -42,10 +45,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           folder: .
           branch: gh-pages
-          target-folder: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || '.' }}
-          clean: ${{ github.event_name != 'pull_request' }}
+          target-folder: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || '' }}
+          clean: false
           commit-message: "Deploy ${{ github.ref }}"
-          single-commit: ${{ github.event_name == 'pull_request' }}
+          single-commit: false
 
       - name: Comment PR with preview URL
         if: github.event_name == 'pull_request'
