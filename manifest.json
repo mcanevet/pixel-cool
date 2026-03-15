@@ -2,7 +2,7 @@
   "name": "Pixel Cool",
   "short_name": "Pixel Cool",
   "description": "Un jeu de puzzle pixel art où vous devez reproduire une mosaïque en échangeant des pixels",
-  "start_url": "/",
+  "start_url": "/pixel-cool/",
   "display": "standalone",
   "background_color": "#1a1a2e",
   "theme_color": "#e94560",
