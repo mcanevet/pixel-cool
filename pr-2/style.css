@@ -1,0 +1,147 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #1a1a2e;
+  --container: #16213e;
+  --accent: #4ecdc4;
+  --text: #eaeaea;
+  --success: #4ecca3;
+  --pixel-size: 32px;
+}
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+header { text-align: center; margin-bottom: 30px; }
+h1 {
+  font-size: 32px;
+  color: var(--accent);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+.level-indicator { font-size: 14px; color: var(--text); opacity: 0.7; }
+.game-container {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+.mosaic-section { display: flex; flex-direction: column; align-items: center; }
+.mosaic-label { font-size: 14px; margin-bottom: 12px; opacity: 0.8; }
+
+.grid {
+  display: grid;
+  gap: 1px;
+  background: #0f0f1a;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+.pixel {
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 2px;
+}
+#targetGrid {
+  transform: scale(0.5);
+  transform-origin: top center;
+}
+#playerGrid {
+  transform: scale(1);
+}
+.pixel:hover {
+  transform: scale(1.15);
+  z-index: 10;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+.pixel.selected {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px var(--accent);
+  z-index: 20;
+}
+footer { margin-top: 40px; text-align: center; width: 100%; max-width: 600px; }
+.progress-container { margin-bottom: 20px; }
+.progress-label { font-size: 14px; margin-bottom: 8px; }
+.progress-bar {
+  height: 8px;
+  background: var(--container);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+.level-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.level-btn {
+  padding: 12px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--container);
+  color: var(--text);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+.level-btn:hover { border-color: var(--accent); }
+.level-btn.active { background: var(--accent); border-color: var(--accent); }
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+.modal-overlay.visible { opacity: 1; visibility: visible; }
+.modal {
+  background: var(--container);
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.visible .modal { transform: scale(1); }
+.modal h2 { color: var(--success); font-size: 28px; margin-bottom: 16px; }
+.modal p { font-size: 16px; margin-bottom: 24px; opacity: 0.8; }
+.modal-btn {
+  padding: 12px 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--accent);
+  color: var(--text);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.modal-btn:hover { transform: scale(1.05); }
+@media (max-width: 768px) {
+  .game-container { gap: 20px; }
+  :root { --pixel-size: 24px; }
+  h1 { font-size: 24px; }
+}
+@media (max-width: 480px) {
+  :root { --pixel-size: 18px; }
+  .grid { padding: 2px; }
+}
