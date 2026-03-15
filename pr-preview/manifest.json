@@ -1,0 +1,16 @@
+{
+  "name": "Pixel Cool",
+  "short_name": "Pixel Cool",
+  "description": "Un jeu de puzzle pixel art où vous devez reproduire une mosaïque en échangeant des pixels",
+  "start_url": "/pixel-cool-pr-1/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#e94560",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100'/><rect fill='%23e94560' x='20' y='20' width='20' height='20'/><rect fill='%234ecca3' x='40' y='20' width='20' height='20'/><rect fill='%23a8dadc' x='60' y='20' width='20' height='20'/><rect fill='%23f1faee' x='20' y='40' width='20' height='20'/><rect fill='%23457b9d' x='40' y='40' width='20' height='20'/><rect fill='%231d3557' x='60' y='40' width='20' height='20'/><rect fill='%232a9d8f' x='20' y='60' width='20' height='20'/><rect fill='%23e9c46a' x='40' y='60' width='20' height='20'/><rect fill='%23f4a261' x='60' y='60' width='20' height='20'/></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
