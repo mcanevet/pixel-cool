@@ -28,6 +28,34 @@ function shuffleArray(array) {
   return arr;
 }
 
+const DISTINCT_COLORS = [
+  '#e63946', '#f1faee', '#a8dadc', '#457b9d',
+  '#1d3557', '#2a9d8f', '#e9c46a', '#f4a261',
+  '#e76f51', '#8ecae6', '#219ebc', '#ffb703',
+  '#fb8500', '#6a4c93', '#1982c4', '#8ac926',
+  '#ff0000', '#00ff00', '#0000ff', '#ffff00',
+  '#ff00ff', '#00ffff', '#ff8800', '#8800ff',
+  '#ffffff', '#000000', '#ff8888', '#88ff88',
+  '#8888ff', '#ffff88', '#ff88ff', '#88ffff'
+];
+
+function quantizeColor(r, g, b) {
+  let closest = DISTINCT_COLORS[0];
+  let minDist = Infinity;
+  
+  for (const color of DISTINCT_COLORS) {
+    const cr = parseInt(color.slice(1, 3), 16);
+    const cg = parseInt(color.slice(3, 5), 16);
+    const cb = parseInt(color.slice(5, 7), 16);
+    const dist = Math.sqrt((r - cr) ** 2 + (g - cg) ** 2 + (b - cb) ** 2);
+    if (dist < minDist) {
+      minDist = dist;
+      closest = color;
+    }
+  }
+  return closest;
+}
+
 function pixelateEmoji(emoji, size) {
   const canvas = document.createElement('canvas');
   canvas.width = size;
@@ -53,7 +81,8 @@ function pixelateEmoji(emoji, size) {
     const a = imageData.data[i + 3];
     
     if (a > 50) {
-      colors.push(`rgb(${r},${g},${b})`);
+      const q = quantizeColor(r, g, b);
+      colors.push(q);
     } else {
       colors.push(null);
     }
